@@ -8,7 +8,7 @@ This is an example setup that uses Envoy to proxy requests into a service deploy
 ```
 mkdir certs; cd certs;
 
-# Server cert generation
+# Server cert generation - Make sure the Common Name matches the desired FQDN of your route / ingress resource
 openssl req -newkey rsa:4096 -keyform PEM -keyout ca.key -x509 -days 3650 -outform PEM -out ca.crt
 openssl genrsa -out server.key 4096
 openssl req -new -key server.key -out server.req -sha256
@@ -19,9 +19,10 @@ rm server.req
 openssl genrsa -out client.key 4096
 openssl req -new -key client.key -out client.req
 openssl x509 -req -in client.req -CA ca.crt -CAkey ca.key -set_serial 101 -extensions client -days 365 -outform PEM -out client.crt
+rm client.req 
 
-# For browser testing, convert to p12 if you like
-
+# For browser testing, convert to p12 if you like and import into your browser
+openssl pkcs12 -export -inkey client.key -in client.crt -out client.p12
 ```
 
 ## OpenShift / Kubernetes Deployment
@@ -42,6 +43,12 @@ oc apply -f deploy/service.yaml
 oc apply -f deploy/route.yaml             # Substitute the route for an ingress object if using k8s
 ```
 
+
+- Test access with cURL
+
+```
+curl https://[route-name]/ --cacert certs/ca.crt --key certs/client.key  --cert certs/client.crt
+```
 
 ## Helpful Resources
 - [https://www.makethenmakeinstall.com/2014/05/ssl-client-authentication-step-by-step/](https://www.makethenmakeinstall.com/2014/05/ssl-client-authentication-step-by-step/)
