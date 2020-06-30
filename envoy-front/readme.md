@@ -34,6 +34,7 @@ oc create secret generic envoy-certs --from-file=ca.crt=ca.crt --from-file=serve
 cd ..
 ```
 
+- Update `deploy/configmap.yaml` as necessary; ie. Modify the `clusters` section to reference the desired back-end service
 - Create deployment artifacts (use `kubectl` if deploying to k8s)
 
 ```
