@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: front-envoy
+    envoy: "true"
+  name: front-envoy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-envoy
+  template:
+    metadata:
+      labels:
+        app: front-envoy
+        envoy: "true"
+    spec:
+      containers:
+      - name: front-envoy
+        image: envoyproxy/envoy-alpine:v1.14-latest
+        args: ["-c", "/etc/envoy.yaml", "--service-cluster", "$(POD_NAME)"]
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - name: envoy-yaml
+          mountPath: /etc/envoy.yaml
+          subPath: envoy.yaml
+        - name: envoy-certs
+          mountPath: /etc/envoy/certs
+      volumes:
+      - name: envoy-yaml
+        configMap:
+          name: front-envoy
+      - name: envoy-certs
+        secret:
+          secretName: envoy-certs
+      restartPolicy: Always
