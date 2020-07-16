@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: curl
+  name: curl2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: curl
+  template:
+    metadata:
+      labels:
+        app: curl
+    spec:
+      containers:
+      - name: front-envoy
+        image: envoyproxy/envoy-alpine:v1.14-latest
+        args: ["-c", "/etc/envoy.yaml", "--service-cluster", "$(POD_NAME)", "-l", "debug"]
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        volumeMounts:
+        - name: envoy-yaml
+          mountPath: /etc/envoy.yaml
+          subPath: envoy.yaml
+        - name: envoy-client-certs
+          mountPath: /etc/envoy/certs
+      - command:
+          - bin/sh
+          - '-c'
+          - sleep 6000
+        image: curlimages/curl
+        imagePullPolicy: Always
+        name: curl
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - mountPath: /opt/certs
+            name: envoy-client-certs
+      volumes:
+      - name: envoy-yaml
+        configMap:
+          name: envoy-config
+      - name: envoy-client-certs
+        secret:
+          secretName: envoy-client-certs
+      restartPolicy: Always

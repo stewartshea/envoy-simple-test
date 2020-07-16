@@ -4,3 +4,6 @@ Provide envoy examples manifests for deployment in OpenShift / Kubernetes to sup
 ## TOC 
 - [Envoy Front Proxy](./envoy-front)
 - [Envoy Sidecar Proxy](./envoy-sidecar)
+
+## Useful Resources
+- [https://www.envoyproxy.io/docs/envoy/latest/install/ref_configs#install-ref-configs](https://www.envoyproxy.io/docs/envoy/latest/install/ref_configs#install-ref-configs)
