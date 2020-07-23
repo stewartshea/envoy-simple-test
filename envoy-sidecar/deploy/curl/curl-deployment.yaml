@@ -16,7 +16,7 @@ spec:
         app: curl
     spec:
       containers:
-      - name: front-envoy
+      - name: envoy
         image: envoyproxy/envoy-alpine:v1.14-latest
         args: ["-c", "/etc/envoy.yaml", "--service-cluster", "$(POD_NAME)", "-l", "debug"]
         env:

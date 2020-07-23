@@ -1,5 +1,7 @@
 ## Purpose
-This is an example setup that uses Envoy to proxy requests into a service deployed on OpenShift. Envoy is configured to perform TLS termination AND client verification with self-signed certificates.  
+This is an example setup that uses Envoy to proxy requests into a service deployed on OpenShift. Envoy is configured to perform TLS termination AND client verification with self-signed certificates.  This example deploys grafana as the `server` component. 
+
+![](assets/envoy-front.png)
 
 ## Cert Creation
 
@@ -34,14 +36,11 @@ oc create secret generic envoy-certs --from-file=ca.crt=ca.crt --from-file=serve
 cd ..
 ```
 
-- Update `deploy/configmap.yaml` as necessary; ie. Modify the `clusters` section to reference the desired back-end service
+- Update `deploy/envoy-configmap.yaml` as necessary; ie. Modify the `clusters` section to reference the desired back-end service
 - Create deployment artifacts (use `kubectl` if deploying to k8s)
 
 ```
-oc apply -f deploy/configmap.yaml
-oc apply -f deploy/deployment.yaml
-oc apply -f deploy/service.yaml
-oc apply -f deploy/route.yaml             # Substitute the route for an ingress object if using k8s
+oc apply -f deploy/
 ```
 
 

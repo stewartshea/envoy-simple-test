@@ -41,7 +41,7 @@ data:
         type: strict_dns
         lb_policy: round_robin
         tls_context: 
-          sni: envoy-front-ws-test.lab.pathfinder.gov.bc.ca
+          sni: grafana-envoy-test.lab.pathfinder.gov.bc.ca
           common_tls_context:
             tls_certificates:
               - certificate_chain:
@@ -58,7 +58,7 @@ data:
             - endpoint:
                 address:
                   socket_address:
-                    address: envoy-front-ws-test.lab.pathfinder.gov.bc.ca
+                    address: grafana-envoy-test.lab.pathfinder.gov.bc.ca
                     port_value: 443
     admin:
       access_log_path: /tmp/admin_access.log
