@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   labels:
     app: curl
-  name: curl2
+  name: curl
 spec:
   replicas: 1
   selector:

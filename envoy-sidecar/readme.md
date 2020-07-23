@@ -68,6 +68,7 @@ oc apply -f deploy/curl/
 
 - From the curl pod, test access to the grafana instance by calling the envoy listener. Envoy will then pick up the call and forward it on to the grafana enpoint with the appropriate SSL certificates. 
 ```
+oc rsh -c curl [curl pod name]
 curl http://127.0.0.1:8443
 ```
 
