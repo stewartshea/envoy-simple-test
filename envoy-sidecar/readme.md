@@ -2,7 +2,7 @@
 
 This is an example setup that uses Envoy to proxy requests into a service deployed on OpenShift. Envoy is configured to perform TLS termination AND client verification with self-signed certificates.  This example uses grafana as the server, and curl as the client, with envoy handling all of the TLS configuration. 
 
-![](assets/envoy-sidecar.png)
+![](assets/envoy-sidecar.jpg)
 
 At a high-level, an envoy container can be added to the pod spec in a deployment. This container should contain the appropriate TLS certificates as well as an envoy config to handle the desired routing pattern. The following is an example of the container configuration: 
 
@@ -27,7 +27,7 @@ At a high-level, an envoy container can be added to the pod spec in a deployment
 ## Cert Creation
 
 - Create your local CA, Server, and Client certificates
-- 
+
 ```
 mkdir certs; cd certs;
 
